@@ -13,3 +13,4 @@ cd backend
 npm install
 npm run dev
 ```
+*Note: Backend requires file server.ts to run after ``` npm run dev ```
