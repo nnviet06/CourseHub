@@ -7,6 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import { Request, Response, NextFunction } from 'express';
 
 // --- Load environment variables ---
 dotenv.config();
@@ -23,15 +24,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // --- Route status ---
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
-app.use((req, res) => {
+app.use((req: Request, res: Response) => {
   res.status(404).json({ error: '404 not found' });
 });
 
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
