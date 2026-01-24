@@ -5,12 +5,16 @@
   "main": "dist/server.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["coursehub", "education", "api"],
+  "keywords": [
+    "coursehub",
+    "education",
+    "api"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
