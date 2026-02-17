@@ -1,4 +1,4 @@
-const LandingPage = ({ children }): { children: React.ReactNode } => {
+const LandingPage = () => {
   return (
     <>
 

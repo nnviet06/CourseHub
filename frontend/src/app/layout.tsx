@@ -1,14 +1,12 @@
-const AppLayout = ({ children }): { children: React.ReactNode } => {
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      <html
-        lang="en"
-      >
-        <body>
+    <html>
+      <body>
+        <main>
           {children}
-        </body>
-      </html>
-    </>
+        </main>
+      </body>
+    </html>
   )
 }
 
