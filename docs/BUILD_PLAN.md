@@ -96,6 +96,14 @@ Role is assigned at sign-up and is immutable.
 
 ---
 
+## Technical Requirements
+
+- **Realtime updates** via Socket.io:
+  - Learners see new courses instantly on the Courses page (Phase 2)
+  - Instructors see new registrations instantly on their Registrations list (Phase 4)
+
+---
+
 ## Development Phases
 
 ### Phase 1 — Auth
@@ -107,6 +115,7 @@ Role is assigned at sign-up and is immutable.
 ### Phase 2 — Course Dashboard
 - Instructor: Create course
 - Learner: Browse and search courses (Courses page)
+- **Realtime:** New courses appear instantly for learners via Socket.io
 
 ### Phase 3 — Course UD
 - Instructor: Update and delete their own courses
@@ -117,6 +126,7 @@ Role is assigned at sign-up and is immutable.
 - Instructor: View, approve, or reject registrations
 - Status field: `pending` → `approved` or `rejected`
 - Learner: My Courses dashboard — **Pending only**
+- **Realtime:** New registrations appear instantly for instructors via Socket.io
 
 ### Phase 5 — CourseLearner
 - Auto-create `CourseLearner` record on registration approval
