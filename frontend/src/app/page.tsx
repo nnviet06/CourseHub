@@ -1,9 +1,3 @@
-const LandingPage = () => {
-  return (
-    <>
+import Landing from "./(Landing)/page";
 
-    </>
-  )
-}
-
-export default LandingPage;
+export default Landing

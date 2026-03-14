@@ -6,11 +6,11 @@ import styles from "./Auth.module.css";
 export default function SignInPage() {
   return (
     <div className="login">
-      <img
-        src="https://www.letseatcake.com/wp-content/uploads/2021/07/funny-memes-13.jpg"
-        alt="login image"
-        className="login__img"
-      />
+      {/* <img */}
+      {/*   src="https://www.letseatcake.com/wp-content/uploads/2021/07/funny-memes-13.jpg" */}
+      {/*   alt="login image" */}
+      {/*   className="login__img" */}
+      {/* /> */}
 
       <form className="login__form">
         <h1 className="login__title">login</h1>
