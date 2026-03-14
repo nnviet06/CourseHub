@@ -1,0 +1,248 @@
+/* ─── Auth.module.css ─── */
+
+/* ─── Page Layout ─── */
+.AuthPage {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── Form Side ─── */
+.FormSide {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #ffffff;
+}
+
+/* ─── Visual Side ─── */
+.VisualSide {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+/* ─── Learner: Form left, Visual right ─── */
+.AuthPageLearner .FormSide {
+  order: 1;
+}
+
+.AuthPageLearner .VisualSide {
+  order: 2;
+  clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+/* ─── Instructor: Visual left, Form right ─── */
+.AuthPageInstructor .FormSide {
+  order: 2;
+}
+
+.AuthPageInstructor .VisualSide {
+  order: 1;
+  clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 0% 100%);
+}
+
+/* ─── Visual Colors ─── */
+.VisualLearner {
+  background-color: #4a6fa5;
+}
+
+.VisualInstructor {
+  background-color: #2d7a4f;
+}
+
+/* ─── Sweep Overlay ─── */
+.SweepOverlay {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 0;
+  z-index: 10;
+  pointer-events: none;
+  transition: width 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              left 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              right 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Learner sweep starts from right */
+.SweepLearner {
+  right: 0;
+  left: auto;
+  background-color: #4a6fa5;
+}
+
+/* Instructor sweep starts from left */
+.SweepInstructor {
+  left: 0;
+  right: auto;
+  background-color: #2d7a4f;
+}
+
+/* Active: sweep covers full page */
+.SweepActive {
+  width: 100%;
+}
+
+/* ─── Visual Content ─── */
+.VisualContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  color: #ffffff;
+}
+
+/* ─── Emoji ─── */
+.VisualEmoji {
+  font-size: 7rem;
+  line-height: 1;
+  transition: opacity 0.2s ease;
+}
+
+.VisualEmojiHidden {
+  opacity: 0;
+}
+
+/* ─── Ghost Button ─── */
+.GhostButton {
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.GhostButton:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Form ─── */
+.Form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 380px;
+}
+
+.Form h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a3c5e;
+  margin-bottom: 0.25rem;
+}
+
+/* ─── Fields ─── */
+.FullNameField,
+.EmailField,
+.PasswordField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+/* ─── Field Label Row ─── */
+.FieldLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4a6fa5;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.FieldLabel i {
+  font-size: 1rem;
+  color: #4a6fa5;
+}
+
+/* ─── Input ─── */
+.FullNameField input,
+.EmailField input,
+.PasswordField input {
+  border: none;
+  border-bottom: 2px solid #cbd5e1;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  padding: 0.4rem 0;
+  width: 100%;
+  color: #1a3c5e;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.FullNameField input:focus,
+.EmailField input:focus,
+.PasswordField input:focus {
+  border-bottom-color: #4a6fa5;
+}
+
+/* ─── Password Input Wrapper ─── */
+.PasswordInput {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.PasswordInput input {
+  width: 100%;
+  padding-right: 2rem;
+  box-sizing: border-box;
+}
+
+.PasswordInput i {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #4a6fa5;
+  font-size: 1rem;
+}
+
+/* ─── Submit Button ─── */
+.SubmitButton {
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #4a6fa5;
+  color: #ffffff;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.SubmitButton:hover {
+  background-color: #1a3c5e;
+}
+
+/* ─── Footer Link ─── */
+.Form p {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.Form p a {
+  color: #4a6fa5;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.Form p a:hover {
+  text-decoration: underline;
+}

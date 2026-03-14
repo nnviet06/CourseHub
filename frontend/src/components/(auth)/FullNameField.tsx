@@ -8,17 +8,17 @@ interface FullNameFieldProps {
 export default function FullNameField({ value, onChange }: FullNameFieldProps) {
   return (
     <div className={styles.FullNameField}>
-      <i className="bx bx-user"></i>
-      <div>
-        <input
-          type="text"
-          required
-          placeholder=""
-          value={value}
-          onChange={onChange}
-        />
+      <div className={styles.FieldLabel}>
+        <i className="bx bx-user"></i>
         <label>Full Name</label>
       </div>
+      <input
+        type="text"
+        required
+        placeholder="Enter your full name"
+        value={value}
+        onChange={onChange}
+      />
     </div>
   )
 }

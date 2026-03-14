@@ -1,4 +1,3 @@
-// PasswordField.tsx
 import styles from '../../app/(auth)/Auth.module.css'
 
 interface PasswordFieldProps {
@@ -10,16 +9,18 @@ interface PasswordFieldProps {
 export default function PasswordField({ label, value, onChange }: PasswordFieldProps) {
   return (
     <div className={styles.PasswordField}>
-      <i className="ri-lock-2-line"></i>
-      <div>
+      <div className={styles.FieldLabel}>
+        <i className="ri-lock-2-line"></i>
+        <label>{label}</label>
+      </div>
+      <div className={styles.PasswordInput}>
         <input
           type="password"
           required
-          placeholder=""
+          placeholder="Enter your password"
           value={value}
           onChange={onChange}
         />
-        <label>{label}</label>
         <i className="ri-eye-off-line"></i>
       </div>
     </div>
