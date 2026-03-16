@@ -41,7 +41,6 @@ export default function SignUp() {
       role === 'instructor' ? styles.AuthPageInstructor : styles.AuthPageLearner,
     ].join(' ')}>
 
-      {/* Sweep Overlay */}
       <div className={[
         styles.SweepOverlay,
         role === 'instructor' ? styles.SweepInstructor : styles.SweepLearner,
