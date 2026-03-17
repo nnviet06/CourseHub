@@ -1,8 +1,3 @@
-/* Description: Initializes and starts the backend server (mount APIs routes,
-connect to database, ...) */
-
-
-// --- Imports ---
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
