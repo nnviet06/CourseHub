@@ -1,4 +1,7 @@
-const userRouter = require('express').Router()
+import express from 'express'
+
+
+const userRouter = express.Router()
 
 interface User{
     username: String;
@@ -12,4 +15,4 @@ userRouter.get('/', async (request, response) => {
 })
 
 
-module.exports = userRouter
+export default userRouter

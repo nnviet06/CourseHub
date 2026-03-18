@@ -1,5 +1,5 @@
-const express = require('express')
-const userRouter = require('./controllers/user')
+import express from 'express'
+import userRouter from './controllers/user'
 
 
 
@@ -14,8 +14,7 @@ const PORT = '3006'
 
 app.listen(PORT, () => {
     console.log('running on port 3006')
-    console.log('go to /api/users')
-    console.log('http://localhost:3006')
+    console.log("http://localhost:3006/api/users");
 })
 
 
