@@ -1,7 +1,9 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 
+export type Role = 'instructor' | 'learner';
+
 export interface UserAttributes {
-  id: number;
+  id: uuid;
   username: string;
   passwordHash: string;
   role: string;
@@ -15,7 +17,7 @@ export class User
   public id!: number;
   public username!: string;
   public passwordHash!: string;
-  public role!: string;
+  public role!: Role;
 
   public readonly createdAt!: Date;
 }
@@ -38,7 +40,7 @@ export const initUserModel = (sequelize: Sequelize): typeof User => {
         field: "password_hash",
       },
       role: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.enum('instructor', 'learner'),
         allowNull: false
       }
     },
