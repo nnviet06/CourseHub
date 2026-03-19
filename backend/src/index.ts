@@ -1,29 +1,14 @@
-// Initialize Sequelize instance and connect to postgres database
+import { connectDatabase } from './database'
+import app from './app'
 
-import { Sequelize } from "sequelize"
-import 'dotenv/config'
+const PORT = process.env.PORT || 5000
 
-
-const sequelize = new Sequelize(
-  "course_hub",
-  process.env.DB_USER!,
-  process.env.DB_PASSWORD,
-  {
-    host: "localhost",
-    dialect: "postgres",
-    port: 5432,
-  },
-);
-
-const testConnect = async () => { 
-    try {
-        await sequelize.authenticate()
-        console.log('connected successfully')
-    } catch (error){
-        console.error('error:', error)
-    }
+const start = async () => {
+  await connectDatabase()
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+    console.log(`Health check: http://localhost:${PORT}/health`)
+  })
 }
 
-testConnect()
-
-export default sequelize
+start()

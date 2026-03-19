@@ -37,6 +37,7 @@ backend/src/
 | --- | --- | --- | 
 | id | uuid | default gen_random_uuid() not null |
 | username | string(50) | not null and <> '' |
+| email | string | not null and <> '' |
 | passwordHash | string(255) | not null and <> '' |
 | role | Role | not null |
 | created_at | timestamptz | default now() and not null | 
