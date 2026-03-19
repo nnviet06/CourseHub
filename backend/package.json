@@ -10,7 +10,11 @@
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["coursehub", "education", "api"],
+  "keywords": [
+    "coursehub",
+    "education",
+    "api"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -21,7 +25,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.17.1",
-    "redis": "^5.10.0"
+    "redis": "^5.10.0",
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -31,6 +36,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.9",
     "@types/pg": "^8.16.0",
+    "@types/sequelize": "^4.28.20",
     "nodemon": "^3.1.11",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
