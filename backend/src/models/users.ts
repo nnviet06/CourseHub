@@ -3,7 +3,7 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 export type Role = 'instructor' | 'learner';
 
 export interface UserAttributes {
-  id: uuid;
+  id: string;
   username: string;
   passwordHash: string;
   role: string;
@@ -14,7 +14,7 @@ export class User
   extends Model<UserAttributes>
   implements UserAttributes
 {
-  public id!: number;
+  public id!: string;
   public username!: string;
   public passwordHash!: string;
   public role!: Role;
