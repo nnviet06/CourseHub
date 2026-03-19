@@ -1,20 +1,11 @@
 // Contains logic for user related routes, such as getting user info, updating user info, etc.
 
-import express from 'express'
+import {Request, Response} from 'express'
 
+export const getAllUsers = (req: Request, res: Response) => {
 
-const userRouter = express.Router()
-
-interface User{
-    username: String;
-    name: String;
-    id: String
 }
 
-userRouter.get('/', async (request, response) => {
-    const users: Array<User> = []
-    response.json(users)
-})
+export const getUserById = (req: Request, res: Response) => {
 
-
-export default userRouter
+}

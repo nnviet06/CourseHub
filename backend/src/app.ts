@@ -2,7 +2,8 @@
 // This file is exported to server.ts for start up 
 
 import express from 'express'
-import userRouter from './controllers/user'
+import * as userController from './controllers/userController'
+import * as authController from './controllers/authController'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv';
@@ -21,6 +22,6 @@ app.use(cors({
 app.use(cookieParser());
 
 // Mount api routes
-app.use('/api/users', userRouter)
+// Put Auth routes here
 
 export default app
