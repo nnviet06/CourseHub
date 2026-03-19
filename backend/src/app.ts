@@ -23,4 +23,14 @@ app.use(cookieParser());
 // Mount api routes
 app.use(router)
 
+
+
+const PORT = '3006'
+
+app.listen(PORT, () => {
+    console.log('running on port 3006')
+    console.log("http://localhost:3006/api/users");
+})
+
+
 export default app

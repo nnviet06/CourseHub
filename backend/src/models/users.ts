@@ -1,10 +1,12 @@
+import { UUID } from "node:crypto";
 import { DataTypes, Model, Sequelize } from "sequelize";
 
 export type Role = 'instructor' | 'learner';
 
 export interface UserAttributes {
   id: string;
-  username: string;
+  username: UUID;
+  email: string;
   passwordHash: string;
   role: string;
   createdAt?: Date;
@@ -14,8 +16,10 @@ export class User
   extends Model<UserAttributes>
   implements UserAttributes
 {
-  public id!: string;
+<<<<<<< HEAD
+  public id!: UUID;
   public username!: string;
+  public email!:string;
   public passwordHash!: string;
   public role!: Role;
 
@@ -34,13 +38,18 @@ export const initUserModel = (sequelize: Sequelize): typeof User => {
         allowNull: false,
         unique: true,
       },
+      email: {
+        type: DataTypes.STRING(50),
+        unique: true
+
+      },
       passwordHash: {
         type: DataTypes.STRING(255),
         allowNull: false,
         field: "password_hash",
       },
       role: {
-        type: DataTypes.enum('instructor', 'learner'),
+        type: DataTypes.ENUM('instructor', 'learner'),
         allowNull: false
       }
     },
