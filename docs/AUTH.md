@@ -25,13 +25,27 @@ backend/src/
 1. User signs up → password hashed with bcrypt → user saved to DB → JWT returned
 2. User logs in  → password compared with bcrypt → JWT returned
 3. User sends requests with JWT → middleware verifies token → route handler executes
+
+
 ```
+
+## User Schema 
+
+- Role: enum('instructor', 'learner') 
+
+| Field | Type | Constraints |
+| --- | --- | --- | 
+| id | uuid | default gen_random_uuid() not null |
+| username | string(50) | not null and <> '' |
+| passwordHash | string(255) | not null and <> '' |
+| role | Role | not null |
+| created_at | timestamptz | default now() and not null | 
 
 ## API Endpoints
 
-### `/api/auth/signup`
+### `/api/auth/signup` -> **void** 
 
-### `/api/auth/login`
+### `/api/auth/login` -> **void** 
 
 ## JWT
 

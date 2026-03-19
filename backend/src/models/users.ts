@@ -1,5 +1,3 @@
-// Sequelize model definition for the users table
-
 import { DataTypes, Model, Sequelize } from "sequelize";
 
 export interface UserAttributes {
@@ -26,8 +24,7 @@ export const initUserModel = (sequelize: Sequelize): typeof User => {
   User.init(
     {
       id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
         primaryKey: true,
       },
       username: {
