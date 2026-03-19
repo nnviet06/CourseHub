@@ -142,6 +142,7 @@
 }
 
 /* ─── Fields ─── */
+.UsernameField,
 .FullNameField,
 .EmailField,
 .PasswordField {
@@ -167,6 +168,7 @@
 }
 
 /* ─── Input ─── */
+.UsernameField input,
 .FullNameField input,
 .EmailField input,
 .PasswordField input {
@@ -182,6 +184,7 @@
   box-sizing: border-box;
 }
 
+.UsernameField input:focus,
 .FullNameField input:focus,
 .EmailField input:focus,
 .PasswordField input:focus {
