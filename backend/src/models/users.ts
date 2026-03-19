@@ -1,3 +1,5 @@
+// Sequelize model definition for the users table
+
 import { DataTypes, Model, Sequelize } from "sequelize";
 
 export interface UserAttributes {
@@ -7,7 +9,6 @@ export interface UserAttributes {
   role: string;
   createdAt?: Date;
 }
-
 
 export class User
   extends Model<UserAttributes>
