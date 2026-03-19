@@ -2,6 +2,7 @@
 import styles from '../Auth.module.css'
 import { useState } from 'react'
 import UsernameField from '../../../components/(auth)/UsernameField'
+import PasswordField from '../../../components/(auth)/PasswordField'
 
 type Role = 'instructor' | 'learner';
 
@@ -9,10 +10,16 @@ export default function SignUp() {
   const [role, setRole] = useState<Role>('learner');
   const [sliding, setSliding] = useState(false);
   const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const handleSignUp = () => {
     if (!username.trim()) {
       console.error('Username is required');
+      return;
+    }
+    if (password !== confirmPassword) {
+      console.error('Passwords do not match');
       return;
     }
     console.log('User sign up as', role, 'with username', username);
@@ -47,6 +54,16 @@ export default function SignUp() {
           <UsernameField
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+          />
+          <PasswordField
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <PasswordField
+            label="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <button
             type="button"
