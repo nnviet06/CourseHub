@@ -9,5 +9,4 @@ const router = Router()
 // Auth routes
 // Insert auth routes here
 
-
 export default router

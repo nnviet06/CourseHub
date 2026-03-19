@@ -1,12 +1,10 @@
 // import app from './app' and start the server
+// entry point for backend server
 
 import { Request, Response, NextFunction } from 'express';
 import app from './app';
 
-
-
 const PORT = process.env.PORT || 5000;
-
 
 // Status check 
 app.get('/health', (req: Request, res: Response) => {
