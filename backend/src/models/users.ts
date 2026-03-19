@@ -3,6 +3,7 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 export interface UserAttributes {
   id: number;
   username: string;
+  email: string;
   passwordHash: string;
   role: string;
   createdAt?: Date;
@@ -15,6 +16,7 @@ export class User
 {
   public id!: number;
   public username!: string;
+  public email!:string;
   public passwordHash!: string;
   public role!: string;
 
@@ -33,6 +35,11 @@ export const initUserModel = (sequelize: Sequelize): typeof User => {
         type: DataTypes.STRING(50),
         allowNull: false,
         unique: true,
+      },
+      email: {
+        type: DataTypes.STRING(50),
+        unique: true
+
       },
       passwordHash: {
         type: DataTypes.STRING(255),
