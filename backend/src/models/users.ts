@@ -1,10 +1,14 @@
-// Sequelize model definition for the users table
+// Sequelize User model
 
+import { UUID } from "node:crypto";
 import { DataTypes, Model, Sequelize } from "sequelize";
 
+export type Role = 'instructor' | 'learner';
+
 export interface UserAttributes {
-  id: number;
-  username: string;
+  id: string;
+  username: UUID;
+  email: string;
   passwordHash: string;
   role: string;
   createdAt?: Date;
@@ -14,10 +18,12 @@ export class User
   extends Model<UserAttributes>
   implements UserAttributes
 {
-  public id!: number;
+<<<<<<< HEAD
+  public id!: UUID;
   public username!: string;
+  public email!:string;
   public passwordHash!: string;
-  public role!: string;
+  public role!: Role;
 
   public readonly createdAt!: Date;
 }
@@ -26,8 +32,7 @@ export const initUserModel = (sequelize: Sequelize): typeof User => {
   User.init(
     {
       id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.UUID,
         primaryKey: true,
       },
       username: {
@@ -35,13 +40,18 @@ export const initUserModel = (sequelize: Sequelize): typeof User => {
         allowNull: false,
         unique: true,
       },
+      email: {
+        type: DataTypes.STRING(50),
+        unique: true
+
+      },
       passwordHash: {
         type: DataTypes.STRING(255),
         allowNull: false,
         field: "password_hash",
       },
       role: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.ENUM('instructor', 'learner'),
         allowNull: false
       }
     },
