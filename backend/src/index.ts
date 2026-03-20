@@ -1,3 +1,5 @@
+// Entry point — connects to DB then starts the server
+
 import { connectDatabase } from './database'
 import app from './app'
 

@@ -1,3 +1,5 @@
+// Sequelize instance and database connection logic
+
 import { Sequelize } from "sequelize"
 import 'dotenv/config'
 

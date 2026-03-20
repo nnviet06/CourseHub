@@ -1,3 +1,5 @@
+// Sequelize User model
+
 import { UUID } from "node:crypto";
 import { DataTypes, Model, Sequelize } from "sequelize";
 

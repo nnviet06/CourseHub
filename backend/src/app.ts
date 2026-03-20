@@ -1,3 +1,5 @@
+// Express app setup — middleware, routes, error handlers
+
 import express, { Request, Response, NextFunction } from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
