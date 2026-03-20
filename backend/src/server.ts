@@ -4,7 +4,7 @@
 import { Request, Response, NextFunction } from "express";
 import app from "./app";
 import { initUserModel } from "./models/users";
-import sequelize from "./index";
+import sequelize from "./database";
 
 const PORT = process.env.PORT || 5000;
 

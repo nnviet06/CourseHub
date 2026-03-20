@@ -1,9 +1,7 @@
-// SignUp.tsx
 "use client";
 import styles from '../Auth.module.css'
 import { useState } from 'react'
-import FullNameField from '../../../components/(auth)/FullNameField'
-import EmailField from '../../../components/(auth)/EmailField'
+import UsernameField from '../../../components/(auth)/UsernameField'
 import PasswordField from '../../../components/(auth)/PasswordField'
 
 type Role = 'instructor' | 'learner';
@@ -11,17 +9,20 @@ type Role = 'instructor' | 'learner';
 export default function SignUp() {
   const [role, setRole] = useState<Role>('learner');
   const [sliding, setSliding] = useState(false);
-  const [fullName, setFullName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const handleSignUp = () => {
+    if (!username.trim()) {
+      console.error('Username is required');
+      return;
+    }
     if (password !== confirmPassword) {
       console.error('Passwords do not match');
       return;
     }
-    console.log('User sign up for role', role);
+    console.log('User sign up as', role, 'with username', username);
   }
 
   const switchRole = () => {
@@ -29,10 +30,10 @@ export default function SignUp() {
     setSliding(true);
     setTimeout(() => {
       setRole(prev => prev === 'learner' ? 'instructor' : 'learner');
-    }, 150); // swap immediately at cover
+    }, 150);
     setTimeout(() => {
       setSliding(false);
-    }, 200); // reveal almost instantly after swap
+    }, 200);
   }
 
   return (
@@ -40,7 +41,6 @@ export default function SignUp() {
       styles.AuthPage,
       role === 'instructor' ? styles.AuthPageInstructor : styles.AuthPageLearner,
     ].join(' ')}>
-
       <div className={[
         styles.SweepOverlay,
         role === 'instructor' ? styles.SweepInstructor : styles.SweepLearner,
@@ -51,14 +51,9 @@ export default function SignUp() {
       <div className={styles.FormSide}>
         <form className={styles.Form}>
           <h1>Sign Up as {role === 'learner' ? 'Learner' : 'Instructor'}</h1>
-
-          <FullNameField
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-          />
-          <EmailField
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+          <UsernameField
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <PasswordField
             label="Password"
@@ -70,7 +65,6 @@ export default function SignUp() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-
           <button
             type="button"
             className={styles.SubmitButton}
@@ -78,7 +72,6 @@ export default function SignUp() {
           >
             Sign Up
           </button>
-
           <p>
             Already have an account? <a href="/login">Log In</a>
           </p>
