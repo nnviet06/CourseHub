@@ -2,7 +2,7 @@
 // This file is exported to server.ts for start up 
 
 import express from 'express'
-import router from './routes'
+import userRouter from './controllers/userController'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv';
@@ -21,16 +21,7 @@ app.use(cors({
 app.use(cookieParser());
 
 // Mount api routes
-app.use(router)
-
-
-
-const PORT = '3006'
-
-app.listen(PORT, () => {
-    console.log('running on port 3006')
-    console.log("http://localhost:3006/api/users");
-})
+app.use("/api/users", userRouter)
 
 
 export default app

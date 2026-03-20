@@ -1,24 +1,23 @@
-import { UUID } from "node:crypto";
-import { DataTypes, Model, Sequelize } from "sequelize";
+import { DataTypes, Model, Sequelize, Optional } from "sequelize";
 
-export type Role = 'instructor' | 'learner';
+export type Role = "instructor" | "learner";
 
 export interface UserAttributes {
-  id: UUID;
+  id: string;
   username: string;
-  email: string;
   passwordHash: string;
-  role: string;
+  role: Role;
   createdAt?: Date;
 }
 
+type UserCreationAttributes = Optional<UserAttributes, "id" | "createdAt">;
+
 export class User
-  extends Model<UserAttributes>
+  extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
-  public id!: UUID;
+  public id!: string;
   public username!: string;
-  public email!:string;
   public passwordHash!: string;
   public role!: Role;
 
@@ -30,6 +29,7 @@ export const initUserModel = (sequelize: Sequelize): typeof User => {
     {
       id: {
         type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
       username: {
@@ -37,26 +37,22 @@ export const initUserModel = (sequelize: Sequelize): typeof User => {
         allowNull: false,
         unique: true,
       },
-      email: {
-        type: DataTypes.STRING(50),
-        unique: true
-
-      },
       passwordHash: {
         type: DataTypes.STRING(255),
         allowNull: false,
         field: "password_hash",
       },
       role: {
-        type: DataTypes.ENUM('instructor', 'learner'),
-        allowNull: false
-      }
+        type: DataTypes.ENUM("instructor", "learner"),
+        allowNull: false,
+      },
     },
     {
       sequelize,
       tableName: "users",
       modelName: "User",
       timestamps: true,
+      updatedAt: false,
       underscored: true,
     },
   );

@@ -26,7 +26,7 @@ Create a `.env` file in the `backend/` folder with the following variables:
 
 ```env
 PORT=5000
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:5000
 DB_USER=coursehub_user
 DB_PASSWORD=your_secure_password_here
 ```
