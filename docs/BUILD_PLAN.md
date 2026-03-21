@@ -115,7 +115,6 @@ Role is assigned at sign-up and is immutable.
 ### Phase 2 — Course Dashboard
 - Instructor: Create course
 - Learner: Browse and search courses (Courses page)
-- **Realtime:** New courses appear instantly for learners via Socket.io
 
 ### Phase 3 — Course UD
 - Instructor: Update and delete their own courses
