@@ -1,124 +1,66 @@
-# CourseHub Backend Server & Database Guide
+# CourseHub Backend Docker Guide
 
-This guide explains how to set up and run the CourseHub backend server and PostgreSQL database.
+This document focuses on running PostgreSQL with Docker and the current backend structure.
 
-## Prerequisites
+## Docker Database Workflow
 
-Make sure you have the following installed on your system:
-
-- **Node.js** v18+ ([Download](https://nodejs.org/))
-- **npm** (comes with Node.js) or **yarn**
-- **Docker** & **Docker Compose** ([Download Docker Desktop](https://www.docker.com/products/docker-desktop))
-  - _Alternative: You can use a local PostgreSQL installation instead of Docker_
-
-## Quick Start
-
-### 1. Install Dependencies
+### Start PostgreSQL
 
 ```bash
-cd backend
-npm install
+docker compose up -d
 ```
 
-### 2. Create Environment Configuration
-
-Create a `.env` file in the `backend/` folder with the following variables:
-
-```env
-PORT=5000
-FRONTEND_URL=http://localhost:5000
-DB_USER=coursehub_user
-DB_PASSWORD=your_secure_password_here
-```
-
-> **Important:** Replace `your_secure_password_here` with a strong password. Keep this file secure and never commit it to version control.
-
-### 3. Start the Database (Docker)
-
-```bash
-docker-compose up -d
-```
-
-This command will:
-
-- Pull the official PostgreSQL 17 Alpine image
-- Create a PostgreSQL container named `postgres_db`
-- Expose the database on `localhost:5432`
-- Create a volume `db_data` for persistent storage
-
-**Verify the database is running:**
+### Check Container Status
 
 ```bash
 docker ps
 ```
 
-You should see the `postgres_db` container in the list.
+You should see `postgres_db` running.
 
-### 4. Start the Backend Server
-
-#### Development Mode (with hot reload)
+### View Database Logs
 
 ```bash
-npm run dev
+docker logs -f postgres_db
 ```
 
-The server will start on `http://localhost:5000` and automatically reload when you make changes to the code.
+### Open psql in the Container
 
-#### Production Mode
-
-First, build the TypeScript:
+Use your configured DB user from `.env`:
 
 ```bash
-npm run build
+docker exec -it postgres_db psql -U <DB_USER> -d course_hub
 ```
 
-Then start the server:
+Useful `psql` commands:
+
+```sql
+\dt
+SELECT * FROM users;
+```
+
+### Stop PostgreSQL
 
 ```bash
-npm start
+docker compose down
 ```
 
-## Available Scripts
-
-| Command         | Description                                                  |
-| --------------- | ------------------------------------------------------------ |
-| `npm run dev`   | Start development server with hot reload (using ts-node-dev) |
-| `npm run build` | Compile TypeScript to JavaScript                             |
-| `npm start`     | Start production server                                      |
-| `npm test`      | Run tests (currently not configured)                        |
-
-## Database Information
-
-- **Database Name:** `course_hub`
-- **Default Port:** `5432`
-- **Image:** PostgreSQL 17 Alpine (lightweight)
-- **Storage:** Docker volume `db_data` (survives container restarts)
-
-### Connecting to the Database
-
-#### Using Docker Container
+### Stop and Remove Database Volume
 
 ```bash
-docker exec -it postgres_db psql -U coursehub_user -d course_hub
+docker compose down -v
 ```
 
-#### Using Tools
+Use this only when you want a clean database state.
 
-- **pgAdmin:** Web-based PostgreSQL management tool
-- **DBeaver:** Desktop database IDE
-- **VS Code Extensions:** PostgreSQL extension for code editor
+## Database Notes
 
-Connection details for tools:
+- Service config is in `docker-compose.yml`.
+- Database name is `course_hub`.
+- Data persists in Docker volume `db_data`.
+- Backend startup initializes models and runs Sequelize sync to create missing tables.
 
-- Host: `localhost`
-- Port: `5432`
-- Username: `coursehub_user` (or value from `DB_USER` in .env)
-- Password: (value from `DB_PASSWORD` in .env)
-- Database: `course_hub`
-
-## Server Health Check
-
-Once the server is running, you can verify it's working:
+## Health Check
 
 ```bash
 curl http://localhost:5000/health
@@ -133,143 +75,40 @@ Expected response:
 }
 ```
 
-## Stopping Services
+## Current Backend Structure
 
-### Stop the Backend Server
-
-Press `Ctrl+C` in the terminal where the server is running.
-
-### Stop the Database Container
-
-```bash
-docker-compose down
-```
-
-To also remove stored data:
-
-```bash
-docker-compose down -v
-```
-
-## Directory Structure
-
-```
+```text
 backend/
-├── src/
-│   ├── index.ts                  # Entry point — connects to DB then starts the server
-│   ├── app.ts                    # Express app setup — middleware, routes, error handlers
-│   ├── database.ts               # Sequelize instance and database connection logic
-│   ├── controllers/              # Request handlers — business logic for each route
-│   │   ├── authController.ts     # Handles login and signup
-│   │   └── userController.ts     # Handles user-related operations (e.g. getAll)
-│   ├── models/                   # Sequelize model definitions — map to database tables
-│   │   └── users.ts              # User model (id, username, passwordHash, role, etc.)
-│   └── routes/                   # Express routers — wire URLs to controllers
-│       ├── authRouter.ts         # Auth routes: POST /api/auth/login, /api/auth/signup
-│       └── userRouter.ts         # User routes: GET /api/users/
-├── docs/                         # Project documentation
-│   ├── AUTH.md                   # Authentication flow and design decisions
-│   └── BUILD_PLAN.md             # Feature roadmap and build plan
-├── dist/                         # Compiled JavaScript output (generated by tsc, do not edit)
-├── docker-compose.yml            # Defines the PostgreSQL Docker container
-├── package.json                  # Project dependencies and npm scripts
-├── package-lock.json             # Locked dependency versions
-├── tsconfig.json                 # TypeScript compiler configuration
-└── .env                          # Environment variables — DB credentials, ports (create this, never commit)
+├── docker-compose.yml
+├── package.json
+├── tsconfig.json
+├── README.md
+└── src/
+    ├── app.ts
+    ├── index.ts
+    ├── routes.ts
+    ├── server.ts
+    ├── controllers/
+    │   ├── authController.ts
+    │   └── userController.ts
+    └── models/
+        └── users.ts
 ```
 
-## Important Notes
+## Common Docker Issues
 
-### ⚠️ Windows PostgreSQL Port Conflict
+### Port 5432 Already In Use (Windows)
 
-If you're on Windows and have a local PostgreSQL service installed, it might be using port 5432, preventing Docker PostgreSQL from binding to that port.
-
-**Check for port conflicts:**
+Check listener:
 
 ```powershell
 Get-NetTCPConnection -LocalPort 5432 -State Listen
 ```
 
-**Solutions:**
+If local PostgreSQL is occupying the port, stop it or remap the container port in `docker-compose.yml`.
 
-1. **Stop the local PostgreSQL service** (if not needed):
+### No Tables Found in psql
 
-   ```powershell
-   Stop-Service -Name "postgresql-x64-17" -Force
-   ```
-
-2. **Use a different port** - Modify `docker-compose.yml`:
-   ```yaml
-   ports:
-     - "5433:5432"
-   ```
-   Then update your `.env`: `DATABASE_URL=postgresql://...@localhost:5433/coursehub`
-
-### Frontend CORS Configuration
-
-The backend accepts requests from `http://localhost:3000` by default. If your frontend runs on a different URL, update the `FRONTEND_URL` in your `.env` file.
-
-### Database Initialization
-
-The database schema should be created using your ORM (Sequelize is configured). Make sure to run any migration scripts before starting the server.
-
-## Troubleshooting
-
-### "connect ECONNREFUSED" Error
-
-The server can't connect to the database. Ensure:
-
-- [ ] Docker PostgreSQL is running: `docker ps`
-- [ ] Correct credentials in `.env` file
-- [ ] Database port is not blocked (check Windows firewall)
-- [ ] Check for port conflicts (see Port Conflict section)
-
-### "command not found: docker"
-
-Docker is not installed or not in your system PATH. Install [Docker Desktop](https://www.docker.com/products/docker-desktop) and restart your terminal.
-
-### "port 5432 is already allocated"
-
-Another service is using port 5432. Either:
-
-- Stop the conflicting service: `docker-compose down`
-- Or use a different port (see Port Conflict section)
-
-### "Cannot find module '@types/...'"
-
-Your dependencies aren't installed. Run:
-
-```bash
-npm install
-```
-
-### Database connection works but server won't start
-
-Check that TypeScript compiled successfully:
-
-```bash
-npm run build
-```
-
-Review the error logs in the terminal for more details.
-
-## Next Steps
-
-- Set up authentication endpoints in the controllers
-- Create database schemas using Sequelize models
-- Configure API routes for courses, users, etc.
-- Set up testing suite
-- Deploy to production (consider using Docker for production as well)
-
-## Environment Variables Reference
-
-| Variable       | Description              | Example                 |
-| -------------- | ------------------------ | ----------------------- |
-| `PORT`         | Server port              | `5000`                  |
-| `FRONTEND_URL` | Frontend origin for CORS | `http://localhost:3000` |
-| `DB_USER`      | PostgreSQL username      | `coursehub_user`        |
-| `DB_PASSWORD`  | PostgreSQL password      | `secure_password`       |
-
----
-
-**Need help?** Check the logs in your terminal or create an issue in the repository.
+- Confirm you are connected to `course_hub`.
+- Confirm you are using the same DB user as `.env` (`DB_USER`).
+- Start backend once so Sequelize can initialize and sync models.
