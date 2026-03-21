@@ -1,7 +1,7 @@
 // Contains logic for user related routes, such as getting user info, updating user info, etc.
 
 import { Request, Response } from "express";
-import { User } from "../models/users";
+import { User } from "../types/userTypes";
 import bcrypt from "bcrypt";
 
 export const getAllUsers = async (request: Request, response: Response) => {

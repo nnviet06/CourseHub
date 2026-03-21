@@ -3,7 +3,7 @@
 import {Request, Response} from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt";
-import { User } from "../models/users";
+import { User } from "../types/userTypes";
 
 export const login = async (req: Request, res: Response) => {
     try {
