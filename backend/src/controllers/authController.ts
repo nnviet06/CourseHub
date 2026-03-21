@@ -81,8 +81,6 @@ export const signup = async (req: Request, res: Response) => {
       role: role,
     });
 
-    
-
     const { passwordHash: _passwordHash, ...safeUser } = user.toJSON();
         res.status(201).json(safeUser);
     }

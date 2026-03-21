@@ -1,28 +1,5 @@
 import { DataTypes, Model, Sequelize, Optional } from "sequelize";
-
-export type Role = "instructor" | "learner";
-
-export interface UserAttributes {
-  id: string;
-  username: string;
-  passwordHash: string;
-  role: Role;
-  createdAt?: Date;
-}
-
-type UserCreationAttributes = Optional<UserAttributes, "id" | "createdAt">;
-
-export class User
-  extends Model<UserAttributes, UserCreationAttributes>
-  implements UserAttributes
-{
-  public id!: string;
-  public username!: string;
-  public passwordHash!: string;
-  public role!: Role;
-
-  public readonly createdAt!: Date;
-}
+import { Role, UserAttributes, UserCreationAttributes, User } from '../types/userTypes'
 
 export const initUserModel = (sequelize: Sequelize): typeof User => {
   User.init(
