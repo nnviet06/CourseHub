@@ -1,10 +1,10 @@
 // Express app setup — middleware, routes, error handlers
 
 import express from 'express'
-import userRouter from './controllers/userController'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import userRouter from './routes/userRouter'
 
 dotenv.config()
 
