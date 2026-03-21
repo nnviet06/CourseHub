@@ -136,33 +136,33 @@ Expected response:
 ---
 
 ## Directory Structure
-
 ```
 backend/
 ├── src/
-│   ├── index.ts                  # Entry point — connects to DB then starts the server
-│   ├── app.ts                    # Express setup — middleware, routes, error handlers
-│   ├── database.ts               # Sequelize instance and database connection logic
-│   ├── controllers/              # Request handlers — business logic for each route
-│   │   ├── authController.ts     # Handles login and signup
-│   │   └── userController.ts     # Handles user-related operations
-│   ├── models/                   # Sequelize model definitions
-│   │   └── users.ts              # User model (id, username, passwordHash, role)
-│   ├── routes/                   # Express routers — wire URLs to controllers
-│   │   ├── authRouter.ts         # POST /api/auth/login, /api/auth/signup
-│   │   └── userRouter.ts         # GET /api/users/
-│   ├── migrations/               # Database migrations — run with sequelize-cli
+│   ├── app.ts                        # Express setup — middleware, routes, error handlers
+│   ├── database.ts                   # Sequelize instance
+│   ├── server.ts                     # Entry point — init model, connect DB, start server
+│   ├── controllers/
+│   │   ├── authController.ts         # Handles login and signup
+│   │   └── userController.ts         # Handles user-related operations
+│   ├── models/
+│   │   └── users.ts                  # User model schema
+│   ├── routes/
+│   │   ├── authRouter.ts             # POST /api/auth/login, /api/auth/signup
+│   │   └── userRouter.ts             # GET /api/users/, POST /api/users/
+│   ├── migrations/
+│   │   └── 20260321035205-create-users.js  # Creates users table
 │   └── config/
-│       ├── database.ts           # Sequelize connection config (used by the app)
-│       └── database.js           # Sequelize CLI config (used by migrations)
+│       └── database.js               # Sequelize CLI config (used by migrations)
 ├── docs/
-│   ├── AUTH.md
-│   └── BUILD_PLAN.md
-├── docker-compose.yml            # PostgreSQL container definition
-├── .sequelizerc                  # Tells sequelize-cli where to find migrations and config
-├── package.json
-├── tsconfig.json
-└── .env                          # Environment variables (create this, never commit)
+│   ├── AUTH.md                       
+│   └── BUILD_PLAN.md                 
+├── docker-compose.yml                # PostgreSQL container definition
+├── .sequelizerc                      # Tells sequelize-cli where to find migrations and config
+├── .env.example                      # Template for environment variables
+├── package.json                      # Dependencies and scripts
+├── tsconfig.json                     # TypeScript compiler config
+└── .env                              # Environment variables (never commit)
 ```
 
 ---
@@ -208,4 +208,3 @@ Either stop the conflicting service or remap the port in `docker-compose.yml`:
 ports:
   - "5433:5432"
 ```
-
