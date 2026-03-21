@@ -1,11 +1,10 @@
 // Express app setup — middleware, routes, error handlers
 
-import express, { Request, Response, NextFunction } from 'express'
+import express from 'express'
+import userRouter from './controllers/userController'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import userRouter from './routes/userRouter'
-import authRouter from './routes/authRouter'
 
 dotenv.config()
 
@@ -19,24 +18,7 @@ app.use(cors({
 }))
 app.use(cookieParser())
 
-// ─── Routes ───
-app.use('/api/users', userRouter)
-app.use('/api/auth', authRouter)
-
-// ─── Health Check ───
-app.get('/health', (req: Request, res: Response) => {
-  res.json({ status: 'OK', message: 'Server is running' })
-})
-
-// ─── 404 ───
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.status(404).json({ error: '404 not found' })
-})
-
-// ─── Global Error Handler ───
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack)
-  res.status(500).json({ error: 'Something went wrong!' })
-})
+// Mount api routes
+app.use("/api/users", userRouter)
 
 export default app
