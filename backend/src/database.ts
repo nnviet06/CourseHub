@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
   },
 );
 
-const testConnect = async () => {
+const connect = async () => {
   try {
     await sequelize.authenticate();
     console.log("connected successfully");
@@ -23,6 +23,6 @@ const testConnect = async () => {
   }
 };
 
-testConnect();
+connect();
 
 export default sequelize;
