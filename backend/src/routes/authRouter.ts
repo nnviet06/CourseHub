@@ -5,7 +5,8 @@ import { login, signup } from '../controllers/authController'
 
 const authRouter = express.Router()
 
-// add routes to this
+authRouter.post('/login', login)
+authRouter.post('/signup', signup)
 
 export default authRouter
 
