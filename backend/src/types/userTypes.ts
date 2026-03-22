@@ -8,9 +8,10 @@ export interface UserAttributes {
   passwordHash: string;
   role: Role;
   createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export type UserCreationAttributes = Omit<UserAttributes, "id" | "createdAt">;
+export type UserCreationAttributes = Omit<UserAttributes, "id" | "createdAt" | "updatedAt">;
 
 export class User
   extends Model<UserAttributes, UserCreationAttributes>
@@ -22,6 +23,7 @@ export class User
   public role!: Role;
 
   public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 
