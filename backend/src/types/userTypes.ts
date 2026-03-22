@@ -1,3 +1,5 @@
+import { Model } from 'sequelize'
+
 export type Role = "instructor" | "learner";
 
 export interface UserAttributes {
