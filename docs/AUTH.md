@@ -75,21 +75,28 @@ Notes:
 ## Implemented Endpoints
 
 - POST /api/auth/signup
+  - req: `{ username, password, role }`
+  - res: `{ id, username, role, createdAt }`
   - Creates a user with hashed password.
   - Returns created user without passwordHash.
 
 - POST /api/auth/login
+  - req: `{ username, password }`
+  - res: `{ id, username, role }` + sets httpOnly cookie with JWT
   - Authenticates user and issues JWT in httpOnly cookie.
   - Returns user without passwordHash.
 
 - GET /api/users
+  - req: nothing
+  - res: `[{ id, username, role, createdAt }]`
   - Returns all users.
   - Excludes passwordHash from response.
   - Not protected (no auth required).
 
 - POST /api/users
-  - Creates a user with hashed password.
-  - Duplicate of signup logic — should be removed or protected.
+  - req: `{ username, password, role }`
+  - res: `{ id, username, role, createdAt }`
+  - Duplicate of signup — commented out pending removal or protection.
 
 ## Planned Auth Endpoints
 
