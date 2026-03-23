@@ -3,8 +3,9 @@ import styles from '../Auth.module.css'
 import { useState } from 'react'
 import UsernameField from '../../../components/(auth)/UsernameField'
 import PasswordField from '../../../components/(auth)/PasswordField'
-
-type Role = 'instructor' | 'learner';
+import type { Role } from '../../../types/userTypes'
+import { signup } from '../../../services/authService'
+import { useRouter } from 'next/navigation'
 
 export default function SignUp() {
   const [role, setRole] = useState<Role>('learner');
@@ -12,8 +13,12 @@ export default function SignUp() {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<Error | null>(null)
 
-  const handleSignUp = () => {
+  const router = useRouter()
+
+  const handleSignUp = async () => {
     if (!username.trim()) {
       console.error('Username is required');
       return;
@@ -22,7 +27,11 @@ export default function SignUp() {
       console.error('Passwords do not match');
       return;
     }
-    console.log('User sign up as', role, 'with username', username);
+    setLoading(true)
+    await signup(username.trim(), password, role)
+      .then(() => router.push('/login'))
+      .catch(setError)
+      .finally(() => setLoading(false))
   }
 
   const switchRole = () => {
