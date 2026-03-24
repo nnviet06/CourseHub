@@ -1,7 +1,7 @@
 // user routes
 
 import express from 'express'
-import { getAllUsers, createUser } from '../controllers/userController'
+import { getAllUsers } from '../controllers/userController'
 
 const userRouter = express.Router()
 
