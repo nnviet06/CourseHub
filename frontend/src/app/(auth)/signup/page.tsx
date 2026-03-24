@@ -18,7 +18,8 @@ export default function SignUp() {
 
   const router = useRouter()
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!username.trim()) {
       console.error('Username is required');
       return;
@@ -58,7 +59,7 @@ export default function SignUp() {
 
       {/* Form Side */}
       <div className={styles.FormSide}>
-        <form className={styles.Form}>
+        <form className={styles.Form} onSubmit={handleSignUp} >
           <h1>Sign Up as {role === 'learner' ? 'Learner' : 'Instructor'}</h1>
           <UsernameField
             value={username}
@@ -75,9 +76,8 @@ export default function SignUp() {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <button
-            type="button"
+            type="submit"
             className={styles.SubmitButton}
-            onClick={handleSignUp}
           >
             Sign Up
           </button>
@@ -108,6 +108,6 @@ export default function SignUp() {
           </button>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
