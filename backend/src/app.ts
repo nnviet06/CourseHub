@@ -4,7 +4,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import userRouter from './routes/userRouter'
 import authRouter from './routes/authRouter'
-import { tokenExtractor, unknownEndpoint, errorHandler } from './middleware'
+import { tokenExtractor, unknownEndpoint, errorHandler } from './utils/middleware'
 
 dotenv.config()
 
