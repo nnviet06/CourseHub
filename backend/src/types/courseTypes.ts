@@ -12,8 +12,7 @@ export type CourseCreationAttributes = Omit<CourseAttributes, 'id' | 'createdAt'
 
 export class Course
   extends Model<CourseAttributes, CourseCreationAttributes>
-  implements CourseAttributes
-{
+  implements CourseAttributes {
   public id!: string;
   public instructorId!: string;
   public title!: string;

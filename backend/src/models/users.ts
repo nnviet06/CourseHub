@@ -1,5 +1,5 @@
-import { DataTypes, Model, Sequelize, Optional } from "sequelize";
-import { Role, UserAttributes, User } from '../types/userTypes'
+import { DataTypes, Sequelize } from "sequelize";
+import { User } from '../types/userTypes'
 
 export const initUserModel = (sequelize: Sequelize): typeof User => {
   User.init(
