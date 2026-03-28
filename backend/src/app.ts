@@ -4,7 +4,8 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import userRouter from './routes/userRouter'
 import authRouter from './routes/authRouter'
-import { tokenExtractor, unknownEndpoint, errorHandler } from './utils/middleware'
+import { unknownEndpoint, errorHandler } from './utils/middleware/general'
+import { Request, Response } from 'express'
 
 dotenv.config()
 
@@ -17,9 +18,11 @@ app.use(cors({
   credentials: true
 }))
 app.use(cookieParser())
-app.use(tokenExtractor)
 
 // ─── Routes ───
+app.get("/health", (_req: Request, res: Response) => {
+  res.json({ status: "OK", message: "Server is running" });
+})
 app.use("/api/users", userRouter)
 app.use("/api/auth", authRouter)
 

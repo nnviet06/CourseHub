@@ -13,10 +13,15 @@ export interface UserAttributes {
 
 export type UserCreationAttributes = Omit<UserAttributes, "id" | "createdAt" | "updatedAt">;
 
+export interface UserPayload {
+  id: string;
+  username: string;
+  role: Role;
+}
+
 export class User
   extends Model<UserAttributes, UserCreationAttributes>
-  implements UserAttributes
-{
+  implements UserAttributes {
   public id!: string;
   public username!: string;
   public passwordHash!: string;

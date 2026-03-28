@@ -88,14 +88,3 @@ export const errorHandler = (
   return next(error);
 };
 
-export const tokenExtractor = (
-  request: Request,
-  _response: Response,
-  next: NextFunction,
-) => {
-  const authorization = request.get("authorization");
-  if (authorization && authorization.startsWith("Bearer ")) {
-    request.token = authorization.replace("Bearer ", "");
-  }
-  next();
-};
