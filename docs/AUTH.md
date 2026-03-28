@@ -7,7 +7,6 @@ Authentication is fully implemented for signup and login.
 - Password hashing with bcrypt during signup.
 - JWT token issued on login, stored in httpOnly cookie.
 - User role supports two values: instructor and learner.
-- Token verification middleware not yet implemented.
 
 ## Current Backend Structure
 ```
