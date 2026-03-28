@@ -6,6 +6,7 @@ import userRouter from './routes/userRouter'
 import authRouter from './routes/authRouter'
 import { unknownEndpoint, errorHandler } from './utils/middleware/general'
 import { Request, Response } from 'express'
+import courseRouter from './routes/courseRouter'
 
 dotenv.config()
 
@@ -25,6 +26,7 @@ app.get("/health", (_req: Request, res: Response) => {
 })
 app.use("/api/users", userRouter)
 app.use("/api/auth", authRouter)
+app.use("/api/courses", courseRouter)
 
 // ─── Error Handlers ───
 app.use(unknownEndpoint)

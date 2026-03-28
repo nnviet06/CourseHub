@@ -15,6 +15,11 @@ export const getAllUsers = async (_request: Request, response: Response) => {
   }
 };
 
+export const getCurrentUser = async (req: Request, res: Response) => {
+  return res.json(req.user)
+}
+
+
 // export const createUser = async (request: Request, response: Response) => {
 //   try {
 //     const { username, password, role } = request.body;

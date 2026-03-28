@@ -89,3 +89,22 @@ export const signup = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to create user" });
   }
 };
+
+export const getCurrentUser = async (req: Request, res: Response) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET!,
+    (error: VerifyErrors | null, decoded: any) => {
+      if (error) {
+        return res.status(401).json({ error: 'Invalid token' });
+      }
+      return res.json(decoded as UserPayload)
+    }
+  );
+  return;
+}
