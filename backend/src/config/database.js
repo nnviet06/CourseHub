@@ -4,8 +4,9 @@ module.exports = {
   development: {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: 'course_hub',
-    host: 'localhost',
-    dialect: 'postgres'
+    database: process.env.DB_NAME || 'course_hub',
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 5432,
+    dialect: 'postgres',
   }
 }

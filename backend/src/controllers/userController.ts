@@ -2,9 +2,8 @@
 
 import { Request, Response } from "express";
 import { User } from "../types/userTypes";
-import bcrypt from "bcrypt";
 
-export const getAllUsers = async (request: Request, response: Response) => {
+export const getAllUsers = async (_request: Request, response: Response) => {
   try {
     const users = await User.findAll({
       attributes: { exclude: ["passwordHash"] },

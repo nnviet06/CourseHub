@@ -1,52 +1,54 @@
 // Contains logic for login and signup
 
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from "bcrypt";
-import { User } from "../types/userTypes";
+import { User, UserPayload } from "../types/userTypes";
 
 export const login = async (req: Request, res: Response) => {
-    try {
-        const { username, password } = req.body;
-        const JWT_SECRET = process.env.JWT_SECRET!;
-    
-        // Validate input
-        if (!username || !password) {
-            return res.status(400).json({ error: "Please enter username and password" });
-        }
+  try {
+    const { username, password } = req.body;
+    const JWT_SECRET = process.env.JWT_SECRET!;
 
-        const user = await User.findOne({ where: { username } });
-        if (!user) {
-        res.status(401).json({ error: "Invalid username or password" });
-        return;
-        }
-
-        const passwordMatch = await bcrypt.compare(password, user.passwordHash);
-        if (!passwordMatch) {
-        res.status(401).json({ error: "Invalid username or password" });
-        return;
-        }
-
-        // Create token
-        const token = jwt.sign(
-        { id: user.id, username: user.username, role: user.role },
-        JWT_SECRET,
-        );
-    
-        // Set cookie
-        res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        });
-    
-        // Return user info without passwordHash
-        const { passwordHash: _passwordHash, ...safeUser } = user.toJSON();
-        res.json(safeUser);
+    // Validate input
+    if (!username || !password) {
+      return res.status(400).json({ error: "Please enter username and password" });
     }
-    catch (error) {
-        res.status(500).json({ error: "Failed to login" });
+
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      res.status(401).json({ error: "Invalid username or password" });
+      return;
     }
+
+    const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+    if (!passwordMatch) {
+      res.status(401).json({ error: "Invalid username or password" });
+      return;
+    }
+
+    // Create token
+    const token = jwt.sign(
+      { id: user.id, username: user.username, role: user.role },
+      JWT_SECRET,
+      { expiresIn: '7d'}
+    );
+
+    // Set cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    // Return user info without passwordHash
+    const { passwordHash: _passwordHash, ...userPayLoad } = user.toJSON();
+    res.json(userPayLoad as UserPayload);
+  }
+  catch (error) {
+    res.status(500).json({ error: "Failed to login" });
+  }
+  return;
 }
 
 
@@ -68,8 +70,8 @@ export const signup = async (req: Request, res: Response) => {
 
     const existingUser = await User.findOne({ where: { username } });
     if (existingUser) {
-        res.status(409).json({ error: "Username already taken" });
-        return;
+      res.status(409).json({ error: "Username already taken" });
+      return;
     }
 
     const saltRounds = 11;
@@ -82,8 +84,8 @@ export const signup = async (req: Request, res: Response) => {
     });
 
     const { passwordHash: _passwordHash, ...safeUser } = user.toJSON();
-        res.status(201).json(safeUser);
-    }
+    res.status(201).json(safeUser);
+  }
   catch (error) {
     res.status(500).json({ error: "Failed to create user" });
   }

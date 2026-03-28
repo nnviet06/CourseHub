@@ -3,17 +3,28 @@ import styles from '../Auth.module.css'
 import { useState } from 'react'
 import UsernameField from '../../../components/(auth)/UsernameField'
 import PasswordField from '../../../components/(auth)/PasswordField'
+import { login } from '../../../services/authService'
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<Error | null>(null)
 
-  const handleLogin = () => {
+  const router = useRouter()
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!username.trim()) {
       console.error('Username is required');
       return;
     }
-    console.log('User login with username', username);
+    setLoading(true)
+    login(username, password)
+      .then(() => router.push('/dashboard'))
+      .catch(setError)
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -27,7 +38,7 @@ export default function Login() {
       </div>
       {/* Form Side */}
       <div className={styles.FormSide}>
-        <form className={styles.Form}>
+        <form className={styles.Form} onSubmit={handleLogin}>
           <h1>Log In</h1>
           <UsernameField
             value={username}
@@ -39,9 +50,9 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button
-            type="button"
+            disabled={loading}
+            type="submit"
             className={styles.SubmitButton}
-            onClick={handleLogin}
           >
             Log In
           </button>

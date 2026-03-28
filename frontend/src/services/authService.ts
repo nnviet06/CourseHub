@@ -11,7 +11,7 @@ export const signup = async (username: string, password: string, role: Role) => 
   }
 }
 
-export const login = async(username: string, password: string) => {
+export const login = async (username: string, password: string) => {
   try {
     const response = await api.post('/api/auth/login', { username, password })
     return response.data
@@ -19,4 +19,6 @@ export const login = async(username: string, password: string) => {
     throw error
   }
 }
+
+
 
