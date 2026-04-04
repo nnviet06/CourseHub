@@ -1,62 +1,102 @@
-# Authentication — Backend
+# Authentication Backend Notes
 
 ## Overview
 
-CourseHub uses JWT-based authentication. Users sign up with a role (`instructor` or `learner`), log in with username and password, and receive a token to access protected routes.
+Authentication is fully implemented for signup and login.
 
-## File Structure
+- Password hashing with bcrypt during signup.
+- JWT token issued on login, stored in httpOnly cookie.
+- User role supports two values: instructor and learner.
 
+## Current Backend Structure
 ```
-backend/src/
-├── controllers/
-│   ├── authController.ts    — signup and login logic
-│   └── userController.ts    — get user info, update user
-├── models/
-│   └── users.ts             — User model (Sequelize)
-├── index.ts                 — Sequelize instance, DB connection
-├── routes.ts                — mounts all API routes
-├── app.ts                   — Express app setup
-└── server.ts                — entry point, starts server
+backend/
+├── src/
+│   ├── app.ts                        # Express setup — middleware, routes, error handlers
+│   ├── database.ts                   # Sequelize instance
+│   ├── server.ts                     # Entry point — init model, connect DB, start server
+│   ├── controllers/
+│   │   ├── authController.ts         # Handles login and signup
+│   │   └── userController.ts         # Handles user-related operations
+│   ├── models/
+│   │   └── users.ts                  # User model schema
+│   ├── routes/
+│   │   ├── authRouter.ts             # POST /api/auth/login, /api/auth/signup
+│   │   └── userRouter.ts             # GET /api/users/, POST /api/users/
+│   ├── migrations/
+│   │   └── 20260321035205-create-users.js  # Creates users table
+│   └── config/
+│       └── database.js               # Sequelize CLI config (used by migrations)
+├── docs/
+│   ├── AUTH.md                       
+│   └── BUILD_PLAN.md                 
+├── docker-compose.yml                # PostgreSQL container definition
+├── .sequelizerc                      # Tells sequelize-cli where to find migrations and config
+├── .env.example                      # Template for environment variables
+├── package.json                      # Dependencies and scripts
+├── tsconfig.json                     # TypeScript compiler config
+└── .env                              # Environment variables (never commit)
 ```
 
 ## Auth Flow
 
-```
-1. User signs up → password hashed with bcrypt → user saved to DB → JWT returned
-2. User logs in  → password compared with bcrypt → JWT returned
-3. User sends requests with JWT → middleware verifies token → route handler executes
+### Signup
+1. Client sends username, password, and role to POST /api/auth/signup.
+2. Server validates input and checks for existing username.
+3. Server hashes password with bcrypt (11 salt rounds).
+4. Server stores user in the users table.
+5. Server returns created user payload without passwordHash.
 
+### Login
+1. Client sends username and password to POST /api/auth/login.
+2. Server validates input and looks up user by username.
+3. Server compares password with stored hash using bcrypt.
+4. Server issues JWT token with user id, username, and role.
+5. Token is set as httpOnly cookie (secure in production, sameSite lax).
+6. Server returns user payload without passwordHash.
 
-```
+Table: users
 
-## User Schema 
+| Field         | Type                      | Constraints                  |
+| ------------- | ------------------------- | ---------------------------- |
+| id            | uuid                      | primary key, default UUIDV4  |
+| username      | varchar(50)               | not null, unique             |
+| password_hash | varchar(255)              | not null                     |
+| role          | enum(instructor, learner) | not null                     |
+| created_at    | timestamptz               | not null                     |
+| updated_at    | timestamptz               | not null                     |
 
-- Role: enum('instructor', 'learner') 
+Notes:
 
-| Field | Type | Constraints |
-| --- | --- | --- | 
-| id | uuid | default gen_random_uuid() not null |
-| username | string(50) | not null and <> '' |
-| passwordHash | string(255) | not null and <> '' |
-| role | Role | not null |
-| created_at | timestamptz | default now() and not null | 
+- updated_at is currently disabled in the Sequelize User model.
+- password hash is stored in DB but excluded from API response payloads.
 
-## API Endpoints
+## Implemented Endpoints
 
-### `/api/auth/signup` -> **void** 
+- POST /api/auth/signup
+  - req: `{ username, password, role }`
+  - res: `{ id, username, role, createdAt }`
+  - Creates a user with hashed password.
+  - Returns created user without passwordHash.
 
-### `/api/auth/login` -> **void** 
+- POST /api/auth/login
+  - req: `{ username, password }`
+  - res: `{ id, username, role }` + sets httpOnly cookie with JWT
+  - Authenticates user and issues JWT in httpOnly cookie.
+  - Returns user without passwordHash.
 
-## JWT
+- GET /api/users
+  - req: nothing
+  - res: `[{ id, username, role, createdAt }]`
+  - Returns all users.
+  - Excludes passwordHash from response.
+  - Not protected (no auth required).
 
-Add later
+- POST /api/users
+  - req: `{ username, password, role }`
+  - res: `{ id, username, role, createdAt }`
+  - Duplicate of signup — commented out pending removal or protection.
 
-## Roles
+## Planned Auth Endpoints
 
-| Role | Value | Description |
-|------|-------|-------------|
-| Learner | `learner` | Browse courses, register for enrollment |
-| Instructor | `instructor` | Create and manage courses, approve enrollments |
-
-Role is set at signup and cannot be changed.
-
+Update later

@@ -1,26 +1,27 @@
-// SignUp.tsx
 "use client";
 import styles from '../Auth.module.css'
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react'
-import FullNameField from '../../../components/(auth)/FullNameField'
-import EmailField from '../../../components/(auth)/EmailField'
+import UsernameField from '../../../components/(auth)/FullNameField'
 import PasswordField from '../../../components/(auth)/PasswordField'
-
-
-type Role = 'instructor' | 'learner';
+import type { Role } from '../../../types/userTypes'
+import { signup } from '../../../services/authService'
+import { useRouter } from 'next/navigation'
 
 export default function SignUp() {
   const [role, setRole] = useState<Role>('learner');
   const [sliding, setSliding] = useState(false);
-  const [fullName, setFullName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<Error | null>(null)
 
-  const handleSignUp = () => {
-    if (!fullName.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+    const router = useRouter()
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!username.trim() || !password.trim() || !confirmPassword.trim()) {
       toast.error('Please provide all required information.', {
         position: "top-center",
         autoClose: 5000,
@@ -60,6 +61,11 @@ export default function SignUp() {
       theme: "light",
       transition: Bounce,
     });
+    setLoading(true)
+    await signup(username.trim(), password, role)
+      .then(() => router.push('/login'))
+      .catch(setError)
+      .finally(() => setLoading(false))
     console.log('User sign up for role', role);
   }
 
@@ -68,10 +74,10 @@ export default function SignUp() {
     setSliding(true);
     setTimeout(() => {
       setRole(prev => prev === 'learner' ? 'instructor' : 'learner');
-    }, 150); // swap immediately at cover
+    }, 150);
     setTimeout(() => {
       setSliding(false);
-    }, 200); // reveal almost instantly after swap
+    }, 200);
   }
 
   return (
@@ -79,7 +85,6 @@ export default function SignUp() {
       styles.AuthPage,
       role === 'instructor' ? styles.AuthPageInstructor : styles.AuthPageLearner,
     ].join(' ')}>
-
       <div className={[
         styles.SweepOverlay,
         role === 'instructor' ? styles.SweepInstructor : styles.SweepLearner,
@@ -88,16 +93,11 @@ export default function SignUp() {
 
       {/* Form Side */}
       <div className={styles.FormSide}>
-        <form className={styles.Form}>
+        <form className={styles.Form} onSubmit={handleSignUp} >
           <h1>Sign Up as {role === 'learner' ? 'Learner' : 'Instructor'}</h1>
-
-          <FullNameField
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-          />
-          <EmailField
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+          <UsernameField
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <PasswordField
             label="Password"
@@ -109,15 +109,12 @@ export default function SignUp() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-
           <button
-            type="button"
+            type="submit"
             className={styles.SubmitButton}
-            onClick={handleSignUp}
           >
             Sign Up
           </button>
-
           <p>
             Already have an account? <a href="/login">Log In</a>
           </p>
