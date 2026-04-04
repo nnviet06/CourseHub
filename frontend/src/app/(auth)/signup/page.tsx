@@ -1,10 +1,13 @@
 // SignUp.tsx
 "use client";
 import styles from '../Auth.module.css'
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react'
 import FullNameField from '../../../components/(auth)/FullNameField'
 import EmailField from '../../../components/(auth)/EmailField'
 import PasswordField from '../../../components/(auth)/PasswordField'
+
 
 type Role = 'instructor' | 'learner';
 
@@ -17,10 +20,46 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const handleSignUp = () => {
-    if (password !== confirmPassword) {
-      console.error('Passwords do not match');
+    if (!fullName.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+      toast.error('Please provide all required information.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       return;
     }
+    if (password !== confirmPassword) {
+      console.error('Passwords do not match');
+      toast.error('Passwords do not match.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    toast.success('Sign up successful', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
     console.log('User sign up for role', role);
   }
 
@@ -106,6 +145,20 @@ export default function SignUp() {
           </button>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </div>
+
   )
 }
