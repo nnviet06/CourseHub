@@ -4,7 +4,7 @@ import { useState } from 'react'
 import UsernameField from '../../../components/(auth)/UsernameField'
 import PasswordField from '../../../components/(auth)/PasswordField'
 import { login } from '../../../services/authService'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function Login() {
   const [username, setUsername] = useState<string>('');
@@ -13,6 +13,9 @@ export default function Login() {
   const [error, setError] = useState<Error | null>(null)
 
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,10 +24,15 @@ export default function Login() {
       return;
     }
     setLoading(true)
-    login(username, password)
-      .then(() => router.push('/dashboard'))
-      .catch(setError)
-      .finally(() => setLoading(false))
+
+    try {
+      await login(username, password);
+      router.push(callbackUrl)
+    } catch (error) {
+      setError(error as Error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

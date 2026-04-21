@@ -28,9 +28,7 @@ FRONTEND_URL=http://localhost:3000
 DB_USER=coursehub_user
 DB_PASSWORD=your_secure_password_here
 DB_NAME=course_hub (or your name)
-DB_HOST=your_host_here
-```
-
+DB_HOST=your_host_here ```
 > Never commit `.env` to version control.
 
 ### 3. Start the Database

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import ProtectedLayout from './(protected)/layout';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -10,7 +11,9 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       </head>
       <body>
         <main>
-          {children}
+          <ProtectedLayout>
+            {children}
+          </ProtectedLayout>
         </main>
       </body>
     </html>
